@@ -23,9 +23,12 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getAreaByHeron(double a, double b, double c) {
-        //        Место для вашего кода
+        if (a >= b + c || b >= a + c || c >= a + b) {
+            return -1;
+        }
 
-        return 0; // Заглушка. При реализации - удалить
+        double p = (a + b + c) / 2;
+        return Math.sqrt(p * (p - a) * (p - b) * (p - c));
     }
 
     /**
@@ -88,9 +91,11 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getInscribedCircleRadius(double a, double b, double c) {
-        //        Место для вашего кода
+        if (a >= b + c || b >= a + c || c >= a + b) {
+            return -1;
+        }
 
-        return 0; // Заглушка. При реализации - удалить
+        return 2 * getAreaByHeron(a, b, c) / (a + b + c);
     }
 
     /**
@@ -101,9 +106,11 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getCircumradius(double a, double b, double c) {
-        //        Место для вашего кода
+        if (a >= b + c || b >= a + c || c >= a + b) {
+            return -1;
+        }
 
-        return 0; // Заглушка. При реализации - удалить
+        return a * b * c / 4 / getAreaByHeron(a, b, c);
     }
 
     /**
@@ -121,8 +128,11 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getAreaAdvanced(double a, double b, double c) {
-        //        Место для вашего кода
-
-        return 0; // Заглушка. При реализации - удалить
+        if (a >= b + c || b >= a + c || c >= a + b) {
+            return -1;
+        }
+        double cosAngle = (b*b + c*c -a*a)/2.0/b/c;
+        double sinAngle = Math.sqrt(1.0 - cosAngle*cosAngle);
+        return 0.5*b*c*sinAngle;
     }
 }
