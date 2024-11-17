@@ -25,12 +25,22 @@ package com.walking.intensive.chapter1.task3;
  */
 public class Task3 {
     public static void main(String[] args) {
-//        Для собственных проверок можете делать любые изменения в этом методе
+
+        for (int i = 1980; i < 2050; i++) {
+            System.out.println(i + "year is leap: " + isLeap(i));
+        }
+
+        for (int i = -20; i < 20; i++) {
+            System.out.println(i + "year is leap: " + isLeap(i));
+        }
     }
 
     static boolean isLeap(int year) {
-        //Место для вашего кода
 
-        return false; // Заглушка. При реализации - удалить
+        if ((year % 4 == 0 && year % 100 != 0 || year % 400 == 0) && year > 0) {
+            return true;
+        }
+
+        return false;
     }
 }
