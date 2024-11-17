@@ -57,7 +57,8 @@ public class Task2 {
             return "Такой квартиры не существует";
         }
 
-        int floorNumber, entranceNumber;
+        int floorNumber;
+        int entranceNumber;
         String flatLocation = null;
 
         switch (flatNumber % 4) {
@@ -73,11 +74,13 @@ public class Task2 {
             case 3:
                 flatLocation = "справа от лифта, влево";
                 break;
+            default:
+                flatLocation = "расположение не удалось определить";
         }
 
         entranceNumber = flatNumber / (floorAmount * 4 + 1) + 1;
         floorNumber = (flatNumber - 1) / 4 % floorAmount + 1;
 
-        return flatNumber + " кв - " + entranceNumber + " подъезд, " + floorNumber + " этаж, " + flatLocation;
+        return String.format("%d кв - %d подъезд, %d этаж, %s", flatNumber, entranceNumber, floorNumber, flatLocation);
     }
 }
