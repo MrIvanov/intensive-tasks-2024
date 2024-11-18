@@ -1,6 +1,5 @@
 package com.walking.intensive.chapter1.task5;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 
 /**
