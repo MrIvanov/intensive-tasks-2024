@@ -1,5 +1,8 @@
 package com.walking.intensive.chapter1.task5;
 
+import java.text.DecimalFormat;
+import java.util.Arrays;
+
 /**
  * Задача поиска площади, величин углов, длин высот, биссектрис, медиан, радиусов вписанной и описанной вокруг
  * треугольника окружностей является центральной в Геометрии.
@@ -10,7 +13,34 @@ package com.walking.intensive.chapter1.task5;
  */
 public class Task5 {
     public static void main(String[] args) {
-//        Для собственных проверок можете делать любые изменения в этом методе
+        double a = 12;
+        double b = 13;
+        double c = 5;
+
+        System.out.println("S by Heron: " + getAreaByHeron(a, b, c));
+        System.out.println("S by cos Angle: " + getAreaAdvanced(a, b, c));
+        System.out.println("Circum R: " + getCircumradius(a, b, c));
+        System.out.println("Inscribed circle R: " + getInscribedCircleRadius(a, b, c));
+
+        System.out.print("\nHeights are:");
+        for (double i : getHeights(a, b, c)) {
+            System.out.print(i + " ");
+        }
+
+        System.out.print("\nBisectors are:");
+        for (double i : getBisectors(a, b, c)) {
+            System.out.print(i + " ");
+        }
+
+        System.out.print("\nMedians are:");
+        for (double i : getMedians(a, b, c)) {
+            System.out.print(i + " ");
+        }
+
+        System.out.print("\nAngles are:");
+        for (double i : getAngles(a, b, c)) {
+            System.out.print(i + " ");
+        }
     }
 
     /**
@@ -27,8 +57,8 @@ public class Task5 {
             return -1;
         }
 
-        double p = (a + b + c) / 2;
-        return Math.sqrt(p * (p - a) * (p - b) * (p - c));
+        double halfPerimeter = (a + b + c) / 2;
+        return Math.sqrt(halfPerimeter * (halfPerimeter - a) * (halfPerimeter - b) * (halfPerimeter - c));
     }
 
     /**
@@ -39,9 +69,17 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getHeights(double a, double b, double c) {
-        //        Место для вашего кода
+        if (a >= b + c || b >= a + c || c >= a + b) {
+            return new double[0];
+        }
 
-        return null; // Заглушка. При реализации - удалить
+        double[] heights = new double[3];
+        heights[0] = 2 * getAreaByHeron(a, b, c) / a;
+        heights[1] = 2 * getAreaByHeron(a, b, c) / b;
+        heights[2] = 2 * getAreaByHeron(a, b, c) / c;
+        Arrays.sort(heights);
+
+        return heights;
     }
 
     /**
@@ -52,9 +90,17 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getMedians(double a, double b, double c) {
-        //        Место для вашего кода
+        if (a >= b + c || b >= a + c || c >= a + b) {
+            return new double[0];
+        }
 
-        return null; // Заглушка. При реализации - удалить
+        double[] medians = new double[3];
+        medians[0] = 0.5 * Math.sqrt(2 * b * b + 2 * c * c - a * a);
+        medians[1] = 0.5 * Math.sqrt(2 * a * a + 2 * c * c - b * b);
+        medians[2] = 0.5 * Math.sqrt(2 * a * a + 2 * b * b - c * c);
+        Arrays.sort(medians);
+
+        return medians;
     }
 
     /**
@@ -65,9 +111,18 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getBisectors(double a, double b, double c) {
-        //        Место для вашего кода
+        if (a >= b + c || b >= a + c || c >= a + b) {
+            return new double[0];
+        }
 
-        return null; // Заглушка. При реализации - удалить
+        double halfPerimeter = (a + b + c) / 2;
+        double[] bisectors = new double[3];
+        bisectors[0] = 2 * Math.sqrt(b * c * halfPerimeter * (halfPerimeter - a)) / (b + c);
+        bisectors[1] = 2 * Math.sqrt(a * c * halfPerimeter * (halfPerimeter - b)) / (a + c);
+        bisectors[2] = 2 * Math.sqrt(a * b * halfPerimeter * (halfPerimeter - c)) / (a + b);
+        Arrays.sort(bisectors);
+
+        return bisectors;
     }
 
     /**
@@ -78,9 +133,18 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getAngles(double a, double b, double c) {
-        //        Место для вашего кода
+        if (a >= b + c || b >= a + c || c >= a + b) {
+            return new double[0];
+        }
 
-        return null; // Заглушка. При реализации - удалить
+        final double radToDeg = 180 / Math.PI;
+        double[] angles = new double[3];
+        angles[0] = radToDeg * Math.acos((b * b + c * c - a * a) / 2 / b / c);
+        angles[1] = radToDeg * Math.acos((a * a + c * c - b * b) / 2 / a / c);
+        angles[2] = radToDeg * Math.acos((a * a + b * b - c * c) / 2 / b / a);
+        Arrays.sort(angles);
+
+        return angles;
     }
 
     /**
@@ -131,8 +195,8 @@ public class Task5 {
         if (a >= b + c || b >= a + c || c >= a + b) {
             return -1;
         }
-        double cosAngle = (b*b + c*c -a*a)/2.0/b/c;
-        double sinAngle = Math.sqrt(1.0 - cosAngle*cosAngle);
-        return 0.5*b*c*sinAngle;
+        double cosAlphaAngle = (b * b + c * c - a * a) / 2 / b / c;
+        double sinAlphaAngle = Math.sqrt(1 - cosAlphaAngle * cosAlphaAngle);
+        return 0.5 * b * c * sinAlphaAngle;
     }
 }
