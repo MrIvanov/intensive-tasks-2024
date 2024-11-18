@@ -1,7 +1,5 @@
 package com.walking.intensive.chapter1.task5;
 
-import java.util.Arrays;
-
 /**
  * Задача поиска площади, величин углов, длин высот, биссектрис, медиан, радиусов вписанной и описанной вокруг
  * треугольника окружностей является центральной в Геометрии.
@@ -52,7 +50,7 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getAreaByHeron(double a, double b, double c) {
-        if (a >= b + c || b >= a + c || c >= a + b) {
+        if (!doesTriangleExist(a, b, c)) {
             return -1;
         }
 
@@ -68,15 +66,15 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getHeights(double a, double b, double c) {
-        if (a >= b + c || b >= a + c || c >= a + b) {
+        if (!doesTriangleExist(a, b, c)) {
             return new double[0];
         }
 
         double[] heights = new double[3];
-        heights[0] = 2 * getAreaByHeron(a, b, c) / a;
-        heights[1] = 2 * getAreaByHeron(a, b, c) / b;
-        heights[2] = 2 * getAreaByHeron(a, b, c) / c;
-        Arrays.sort(heights);
+        heights[0] = calcHeight(a, b, c);
+        heights[1] = calcHeight(b, a, c);
+        heights[2] = calcHeight(c, a, b);
+        gnomeSort(heights);
 
         return heights;
     }
@@ -89,15 +87,15 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getMedians(double a, double b, double c) {
-        if (a >= b + c || b >= a + c || c >= a + b) {
+        if (!doesTriangleExist(a, b, c)) {
             return new double[0];
         }
 
         double[] medians = new double[3];
-        medians[0] = 0.5 * Math.sqrt(2 * b * b + 2 * c * c - a * a);
-        medians[1] = 0.5 * Math.sqrt(2 * a * a + 2 * c * c - b * b);
-        medians[2] = 0.5 * Math.sqrt(2 * a * a + 2 * b * b - c * c);
-        Arrays.sort(medians);
+        medians[0] = calcMedian(a, b, c);
+        medians[1] = calcMedian(b, a, c);
+        medians[2] = calcMedian(c, a, b);
+        gnomeSort(medians);
 
         return medians;
     }
@@ -110,16 +108,15 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getBisectors(double a, double b, double c) {
-        if (a >= b + c || b >= a + c || c >= a + b) {
+        if (!doesTriangleExist(a, b, c)) {
             return new double[0];
         }
 
-        double halfPerimeter = (a + b + c) / 2;
         double[] bisectors = new double[3];
-        bisectors[0] = 2 * Math.sqrt(b * c * halfPerimeter * (halfPerimeter - a)) / (b + c);
-        bisectors[1] = 2 * Math.sqrt(a * c * halfPerimeter * (halfPerimeter - b)) / (a + c);
-        bisectors[2] = 2 * Math.sqrt(a * b * halfPerimeter * (halfPerimeter - c)) / (a + b);
-        Arrays.sort(bisectors);
+        bisectors[0] = calcBisector(a, b, c);
+        bisectors[1] = calcBisector(b, a, c);
+        bisectors[2] = calcBisector(c, a, b);
+        gnomeSort(bisectors);
 
         return bisectors;
     }
@@ -132,16 +129,15 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getAngles(double a, double b, double c) {
-        if (a >= b + c || b >= a + c || c >= a + b) {
+        if (!doesTriangleExist(a, b, c)) {
             return new double[0];
         }
 
-        final double radToDeg = 180 / Math.PI;
         double[] angles = new double[3];
-        angles[0] = radToDeg * Math.acos((b * b + c * c - a * a) / 2 / b / c);
-        angles[1] = radToDeg * Math.acos((a * a + c * c - b * b) / 2 / a / c);
-        angles[2] = radToDeg * Math.acos((a * a + b * b - c * c) / 2 / b / a);
-        Arrays.sort(angles);
+        angles[0] = calcAngle(a, b, c);
+        angles[1] = calcAngle(b, a, c);
+        angles[2] = calcAngle(c, a, b);
+        gnomeSort(angles);
 
         return angles;
     }
@@ -154,7 +150,7 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getInscribedCircleRadius(double a, double b, double c) {
-        if (a >= b + c || b >= a + c || c >= a + b) {
+        if (!doesTriangleExist(a, b, c)) {
             return -1;
         }
 
@@ -169,7 +165,7 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getCircumradius(double a, double b, double c) {
-        if (a >= b + c || b >= a + c || c >= a + b) {
+        if (!doesTriangleExist(a, b, c)) {
             return -1;
         }
 
@@ -191,11 +187,64 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getAreaAdvanced(double a, double b, double c) {
-        if (a >= b + c || b >= a + c || c >= a + b) {
+        if (!doesTriangleExist(a, b, c)) {
             return -1;
         }
+
         double cosAlphaAngle = (b * b + c * c - a * a) / 2 / b / c;
         double sinAlphaAngle = Math.sqrt(1 - cosAlphaAngle * cosAlphaAngle);
+
         return 0.5 * b * c * sinAlphaAngle;
+    }
+
+    static boolean doesTriangleExist(double a, double b, double c) {
+        if (a >= b + c || b >= a + c || c >= a + b) {
+            return false;
+        }
+
+        if (a <= 0 || b <= 0 || c <= 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    static double calcMedian(double a, double b, double c) {
+        return 0.5 * Math.sqrt(2 * b * b + 2 * c * c - a * a);
+    }
+
+    static double calcBisector(double a, double b, double c) {
+        double halfPerimeter = (a + b + c) / 2;
+
+        return 2 * Math.sqrt(b * c * halfPerimeter * (halfPerimeter - a)) / (b + c);
+    }
+
+    static double calcHeight(double a, double b, double c) {
+        return 2 * getAreaByHeron(a, b, c) / a;
+    }
+
+    static double calcAngle(double a, double b, double c) {
+        double radToDeg = 180 / Math.PI;
+
+        return radToDeg * Math.acos((b * b + c * c - a * a) / 2 / b / c);
+    }
+
+    static void gnomeSort(double[] array) {
+        int i = 1;
+
+        while (i < array.length) {
+            if (i == 0) {
+                i++;
+            }
+            if (array[i] >= array[i - 1]) {
+                i++;
+            } else {
+                double temp = 0;
+                temp = array[i];
+                array[i] = array[i - 1];
+                array[i - 1] = temp;
+                i--;
+            }
+        }
     }
 }
