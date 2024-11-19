@@ -50,7 +50,7 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getAreaByHeron(double a, double b, double c) {
-        if (!doesTriangleExist(a, b, c)) {
+        if (!isTriangleValid(a, b, c)) {
             return -1;
         }
 
@@ -66,14 +66,15 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getHeights(double a, double b, double c) {
-        if (!doesTriangleExist(a, b, c)) {
+        if (!isTriangleValid(a, b, c)) {
             return new double[0];
         }
 
+        double area = getAreaByHeron(a, b, c);
         double[] heights = new double[3];
-        heights[0] = calcHeight(a, b, c);
-        heights[1] = calcHeight(b, a, c);
-        heights[2] = calcHeight(c, a, b);
+        heights[0] = calculateHeight(area, a);
+        heights[1] = calculateHeight(area, b);
+        heights[2] = calculateHeight(area, c);
         gnomeSort(heights);
 
         return heights;
@@ -87,14 +88,14 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getMedians(double a, double b, double c) {
-        if (!doesTriangleExist(a, b, c)) {
+        if (!isTriangleValid(a, b, c)) {
             return new double[0];
         }
 
         double[] medians = new double[3];
-        medians[0] = calcMedian(a, b, c);
-        medians[1] = calcMedian(b, a, c);
-        medians[2] = calcMedian(c, a, b);
+        medians[0] = calculateMedian(a, b, c);
+        medians[1] = calculateMedian(b, a, c);
+        medians[2] = calculateMedian(c, a, b);
         gnomeSort(medians);
 
         return medians;
@@ -108,14 +109,14 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getBisectors(double a, double b, double c) {
-        if (!doesTriangleExist(a, b, c)) {
+        if (!isTriangleValid(a, b, c)) {
             return new double[0];
         }
 
         double[] bisectors = new double[3];
-        bisectors[0] = calcBisector(a, b, c);
-        bisectors[1] = calcBisector(b, a, c);
-        bisectors[2] = calcBisector(c, a, b);
+        bisectors[0] = calculateBisector(a, b, c);
+        bisectors[1] = calculateBisector(b, a, c);
+        bisectors[2] = calculateBisector(c, a, b);
         gnomeSort(bisectors);
 
         return bisectors;
@@ -129,14 +130,14 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать пустой массив нулевой длины.
      */
     static double[] getAngles(double a, double b, double c) {
-        if (!doesTriangleExist(a, b, c)) {
+        if (!isTriangleValid(a, b, c)) {
             return new double[0];
         }
 
         double[] angles = new double[3];
-        angles[0] = calcAngle(a, b, c);
-        angles[1] = calcAngle(b, a, c);
-        angles[2] = calcAngle(c, a, b);
+        angles[0] = calculateAngle(a, b, c);
+        angles[1] = calculateAngle(b, a, c);
+        angles[2] = calculateAngle(c, a, b);
         gnomeSort(angles);
 
         return angles;
@@ -150,7 +151,7 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getInscribedCircleRadius(double a, double b, double c) {
-        if (!doesTriangleExist(a, b, c)) {
+        if (!isTriangleValid(a, b, c)) {
             return -1;
         }
 
@@ -165,7 +166,7 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getCircumradius(double a, double b, double c) {
-        if (!doesTriangleExist(a, b, c)) {
+        if (!isTriangleValid(a, b, c)) {
             return -1;
         }
 
@@ -187,7 +188,7 @@ public class Task5 {
      * <p>Если входные данные некорректны - метод должен возвращать -1.
      */
     static double getAreaAdvanced(double a, double b, double c) {
-        if (!doesTriangleExist(a, b, c)) {
+        if (!isTriangleValid(a, b, c)) {
             return -1;
         }
 
@@ -197,7 +198,7 @@ public class Task5 {
         return 0.5 * b * c * sinAlphaAngle;
     }
 
-    static boolean doesTriangleExist(double a, double b, double c) {
+    static boolean isTriangleValid(double a, double b, double c) {
         if (a >= b + c || b >= a + c || c >= a + b) {
             return false;
         }
@@ -209,21 +210,21 @@ public class Task5 {
         return true;
     }
 
-    static double calcMedian(double a, double b, double c) {
+    static double calculateMedian(double a, double b, double c) {
         return 0.5 * Math.sqrt(2 * b * b + 2 * c * c - a * a);
     }
 
-    static double calcBisector(double a, double b, double c) {
+    static double calculateBisector(double a, double b, double c) {
         double halfPerimeter = (a + b + c) / 2;
 
         return 2 * Math.sqrt(b * c * halfPerimeter * (halfPerimeter - a)) / (b + c);
     }
 
-    static double calcHeight(double a, double b, double c) {
-        return 2 * getAreaByHeron(a, b, c) / a;
+    static double calculateHeight(double area, double baseSide) {
+        return 2 * area / baseSide;
     }
 
-    static double calcAngle(double a, double b, double c) {
+    static double calculateAngle(double a, double b, double c) {
         double radToDeg = 180 / Math.PI;
 
         return radToDeg * Math.acos((b * b + c * c - a * a) / 2 / b / c);
