@@ -1,5 +1,6 @@
 package com.walking.intensive.chapter2.task7;
 
+
 /**
  * Пятиклассник Ваня придумал забаву. Он ввел понятие «дружественной пары» чисел.
  * Два различных натуральных числа N и M он назвал дружественными, если сумма делителей числа N
@@ -27,11 +28,39 @@ package com.walking.intensive.chapter2.task7;
  */
 public class Task7 {
     public static void main(String[] args) {
-//        Для собственных проверок можете делать любые изменения в этом методе
+        int n = 497;
+        int friendlyPair = getFriendlyPair(n);
+        System.out.printf("Дружественное число для:  %d равно %d \n", n, friendlyPair);
+        System.out.printf("При этом сумма делителей для %d равна %d \n", friendlyPair, getDivisorsSum(friendlyPair));
     }
 
     static int getFriendlyPair(int n) {
-        // Ваш код
+        if (n < 1 || n > 1_000_000) {
+            return -1;
+        }
+
+        // по условию задачи сумма делителей должна быть максимальна, но не более n, в идеальном случае это n
+        for (int i = n; i >= 1; i--) {
+            int friendlyPair = getDivisorsSum(i);
+            if (i != friendlyPair && getDivisorsSum(friendlyPair) == i) {
+                return i;
+            }
+        }
+
         return 0;
     }
+
+    static int getDivisorsSum(int n) {
+        int sum = 1;
+        // ряд делителей: 1 d1 d2...sqrt(n)...n/d2 n/d1 n/1
+        for (int i = 2; i <= (int) Math.sqrt(n); i++) {
+            if (n % i == 0) {
+                sum += i;
+                sum += n / i;
+            }
+        }
+
+        return sum;
+    }
 }
+
