@@ -25,15 +25,15 @@ public class Task8 {
     }
 
     static double getHappyTicketChance() {
-        int happyTicketsNum = 0;
+        int happyTicketsNumber = 0;
 
         for (int i = 0; i <= 999_999; i++) {
             if (getDigitsSum(i / 1000) == getDigitsSum(i % 1000)) {
-                happyTicketsNum++;
+                happyTicketsNumber++;
             }
         }
 
-        return happyTicketsNum / 1000000.;
+        return happyTicketsNumber / 1000000.;
     }
 
     static int getDigitsSum(int num) {
