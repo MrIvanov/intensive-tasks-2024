@@ -20,11 +20,27 @@ package com.walking.intensive.chapter2.task8;
  */
 public class Task8 {
     public static void main(String[] args) {
-//        Для собственных проверок можете делать любые изменения в этом методе
+        System.out.println("сумма разрядов числа 999 равна " + getDigitsSum(999));
+        System.out.printf("Вероятность выпадения счастливого билета равна %.6f \n", getHappyTicketChance());
     }
 
     static double getHappyTicketChance() {
-        // Ваш код
-        return 0.0;
+        int happyTicketsNum = 0;
+
+        for (int i = 0; i <= 999_999; i++) {
+            if (getDigitsSum(i / 1000) == getDigitsSum(i % 1000)) {
+                happyTicketsNum++;
+            }
+        }
+
+        return happyTicketsNum / 1000000.;
+    }
+
+    static int getDigitsSum(int num) {
+        if (num < 1) {
+            return 0;
+        }
+
+        return num % 10 + getDigitsSum(num / 10);
     }
 }
